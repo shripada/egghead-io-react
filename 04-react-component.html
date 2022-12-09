@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .details {
+        color: red;
+      }
+      .bold {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById('root');
+      const manager = { name: 'manager', age: 30 };
+      const engineer = { name: 'engineer', age: 20 };
+
+      // This is called as a function based component.
+      const Employee = (props) => (
+        <React.Fragment>
+          <h1>Employee name:{props.name}</h1>
+          <h2>Employee age:{props.age}</h2>
+          <h3>{props.children}</h3>
+        </React.Fragment>
+      );
+
+      const divElement = (
+        <div className="container">
+          <Employee {...manager}> This is a child </Employee>
+
+          <Employee {...engineer} />
+        </div>
+      );
+      //   ReactDOM.render(divElement, container);
+      const root = ReactDOM.createRoot(container); // createRoot(container!) if you use TypeScript
+      root.render(divElement);
+    </script>
+  </body>
+</html>

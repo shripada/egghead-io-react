@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .details {
+        color: red;
+      }
+      .bold {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById('root');
+      //   const contentElement = document.createElement('div');
+      //   contentElement.textContent = 'Hello World';
+      //   contentElement.className = 'container';
+      //   container.appendChild(contentElement);
+      //   const divElement = React.createElement(
+      //     'div',
+      //     {
+      //       className: 'container',
+      //       someProp: 'some prop',
+      //       children: [
+      //         'Hello World',
+      //         ' ',
+      //         React.createElement('p', {
+      //           className: 'details bold',
+      //           children: 'details here',
+      //         }),
+      //       ],
+      //     }
+      //     // 'Hello World',
+      //     // ' ',
+      //     // 'Of React'
+      //   );
+      const divElement = (
+        <div className="container">
+          <h1>Welcome To React</h1>
+          <p className="details bold">React is a modern front end framework</p>
+        </div>
+      );
+      //   ReactDOM.render(divElement, container);
+      const root = ReactDOM.createRoot(container); // createRoot(container!) if you use TypeScript
+      root.render(divElement);
+    </script>
+  </body>
+</html>

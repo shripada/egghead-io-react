@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .details {
+        color: red;
+      }
+      .bold {
+        font-weight: bold;
+      }
+      input {
+        margin-top: 10px;
+        display: block;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const rootElement = document.getElementById('root');
+      const root = ReactDOM.createRoot(rootElement);
+      const GREETING_KEY = 'greeting';
+
+      const useLocalStorageState = (
+        key,
+        defaultValue = () => window.localStorage.getItem(key) || ''
+      ) => {
+        const [state, setState] = React.useState(() => defaultValue());
+
+        React.useEffect(() => {
+          window.localStorage.setItem(key, state);
+        }, [key, state]);
+
+        return [state, setState];
+      };
+
+      const Greeting = ({ name }) => {
+        const [greeting, setGreeting] = useLocalStorageState(GREETING_KEY);
+
+        React.useEffect(() => {
+          // do something here
+          console.log('some side effect');
+          return () => console.log('cleanup the some side effect');
+        }, [greeting]);
+
+        const onGreetingChanged = (e) => {
+          setGreeting(e.target.value);
+        };
+        return (
+          <div>
+            <h2>Hey {name} please enter a greeting message! </h2>
+
+            <div>
+              <label htmlFor="greeting-input">Greeting:</label>
+              <input
+                type="text"
+                id="greeting-input"
+                value={greeting}
+                onChange={onGreetingChanged}
+              />
+            </div>
+          </div>
+        );
+      };
+
+      const App = () => {
+        const [count, setCount] = React.useState(0);
+        return (
+          <div>
+            <button onClick={() => setCount((prev) => prev + 1)}>
+              {count}
+            </button>
+            {count > 10 ? null : <Greeting name="Foo" />}
+          </div>
+        );
+      };
+      root.render(<App />);
+    </script>
+  </body>
+</html>

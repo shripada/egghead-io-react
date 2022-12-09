@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .details {
+        color: red;
+      }
+      .bold {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      //   function renderUsingVenilla() {
+      //     const date = new Date().toLocaleTimeString();
+      //     const html = `<div> This is some content
+      //         <h1> ${date} </h1>
+      //         <p> Time is one thing that passes anyways</p>
+      //         </div>
+      //         `;
+      //     const root = document.getElementById('root');
+      //     root.innerHTML = html;
+      //   }
+
+      //   setInterval(() => renderUsingVenilla(), 1000);
+      //   const TimeDisplay = () => {
+      //     const date = new Date().toLocaleTimeString();
+      //     return (
+      //       <div>
+      //         This is some content
+      //         <h1> {date} </h1>
+      //         <p> Time is one thing that passes anyways</p>
+      //       </div>
+      //     );
+      //   };
+      const date = new Date().toLocaleTimeString();
+      //   const timeDisplay = (
+      //     <div>
+      //       This is some content
+      //       <h1> {new Date().toLocaleTimeString()} </h1>
+      //       <p> Time is one thing that passes anyways</p>
+      //     </div>
+      //   );
+
+      const rootElement = document.getElementById('root');
+      const root = ReactDOM.createRoot(rootElement);
+      const TimeDisplay = () => (
+        <div>
+          This is some content
+          <h1> {new Date().toLocaleTimeString()} </h1>
+          <p> Time is one thing that passes anyways</p>
+        </div>
+      );
+      function render() {
+        // const TimeDisplay = () => (
+        //   <div>
+        //     This is some content
+        //     <h1> {new Date().toLocaleTimeString()} </h1>
+        //     <p> Time is one thing that passes anyways</p>
+        //   </div>
+        // );
+        root.render(<TimeDisplay />);
+      }
+
+      setInterval(render, 1000);
+      //   ReactDOM.render(divElement, container);
+      //   const root = ReactDOM.createRoot(container); // createRoot(container!) if you use TypeScript
+      //   root.render(divElement);
+    </script>
+  </body>
+</html>

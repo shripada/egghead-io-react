@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .details {
+        color: red;
+      }
+      .bold {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+            const rootElement = document.getElementById('root');
+            const root = ReactDOM.createRoot(rootElement);
+
+            //   let state = { count: 0, text: '' };
+
+            const App = () => {
+              const [count, setCount] = React.useState(0);
+              const [text, setText] = React.useState('');
+
+              function handleInput(e) {
+                setText(e.target.value);
+              }
+              return (
+                <div>
+                  <p>The button was tapped {count} times</p>
+                  <button
+                    onClick={(e) => {
+                      setCount(count + 1);
+                    }}
+                  >
+                    Click me
+                  </button>
+                  <div>
+                    <input type="text" onChange={handleInput} />
+                  </div>
+                  <p>
+                    {text === '' ? 'Please type something' : `You typed: ${text}`}{' '}
+                  </p>
+                </div>
+              );
+            };
+
+            function renderApp() {
+              root.render(<App />);
+            }
+
+            renderApp();
+      import React from 'react';
+      import { PhotoStory, VideoStory } from './stories';
+
+      const components = {
+        photo: PhotoStory,
+        video: VideoStory
+      };
+
+      function Story(props) {
+        // Wrong! JSX type can't be an expression.
+        return <components[props.storyType] story={props.story} />;
+      }
+    </script>
+  </body>
+</html>

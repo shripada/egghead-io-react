@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .counter {
+        display: flex;
+        width: min-content;
+        align-items: center;
+        border: solid 1px skyblue;
+      }
+
+      .counter-button {
+        margin: 15px;
+      }
+
+      .count-value {
+        font: monospace;
+        font-size: large;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const rootElement = document.getElementById('root');
+      const root = ReactDOM.createRoot(rootElement);
+
+      const Counter = ({ delta = 1, style }) => {
+        const [count, setCount] = React.useState(0);
+        const [color, setColor] = React.useState('green');
+        const [welcome, setWelcome] = React.useState('');
+        React.useEffect(() => {
+          if (count > 5) {
+            setColor('red');
+          } else {
+            setColor('green');
+          }
+        }, [count]);
+
+        React.useEffect(() => {
+          setWelcome('Welcome to the counter!!');
+        }, []);
+
+        React.useEffect(() => {
+          if (count > 7) {
+            setWelcome('You are a premier!');
+          }
+        }, [count]);
+
+        return (
+          <div className="counter" style={style}>
+            <button
+              className="counter-button"
+              onClick={() => setCount((prev) => prev - delta)}
+              disabled={count === 0}
+            >
+              -
+            </button>
+            <span className="count-value" style={{ color: `${color}` }}>
+              {count}
+            </span>
+            <button
+              className="counter-button"
+              onClick={() => setCount((prev) => prev + delta)}
+              disabled={count === 10}
+            >
+              +
+            </button>
+            <div>{welcome}</div>
+          </div>
+        );
+      };
+
+      const useOnlineStatus = () => {
+        const [online, setOnline] = React.useState(navigator.onLine);
+        function onOffline(e) {
+          setOnline(false);
+        }
+        function onOnline(e) {
+          setOnline(true);
+        }
+        React.useEffect(() => {
+          window.addEventListener('offline', onOffline);
+          window.addEventListener('online', onOnline);
+
+          return () => {
+            window.removeEventListener('offline', onOffline);
+            window.removeEventListener('online', onOnline);
+          };
+        }, []);
+
+        return online;
+      };
+
+      const App = () => {
+        const online = useOnlineStatus();
+
+        return (
+          <div>
+            <Counter delta={1} style={{ margin: '10px' }} />
+            <Counter
+              delta={1}
+              style={{ margin: '10px', color: 'red', backgroundColor: 'blue' }}
+            />
+            <Counter delta={1} style={{ margin: '10px' }} />
+            <div style={{ color: `${online ? 'green' : 'red'}` }}>
+              {online ? 'You are online' : 'You are offline'}
+            </div>
+          </div>
+        );
+      };
+      root.render(<App />);
+    </script>
+  </body>
+</html>

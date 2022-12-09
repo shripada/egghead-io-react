@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .details {
+        color: red;
+      }
+      .bold {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const container = document.getElementById('root');
+      const welcome = 'Welcome to react in codecraft';
+      const greeting = (greetie) => `Welcome ${greetie}`;
+      const props = { className: 'container', id: 'container-id' };
+      const aRandom = Math.floor(Math.random() * 10);
+
+      //   const divElement = (
+      //     <div {...props} {...{ id: 'bar' }} id="new-id">
+      //       <h1>Current date:{Date()} </h1>
+      //     </div>
+      //   );
+      const someElement = (
+        <React.Fragment>
+          <React.Fragment>
+            <h1>World is here</h1>
+            <h2>In Milky way </h2>
+          </React.Fragment>
+          <div>Hi I am another div</div>
+        </React.Fragment>
+      );
+      //   ReactDOM.render(divElement, container);
+      const root = ReactDOM.createRoot(container); // createRoot(container!) if you use TypeScript
+      root.render(someElement);
+    </script>
+  </body>
+</html>
