@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      .child-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        width: 100px;
+        height: 100px;
+        border: 1px solid rebeccapurple;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const rootElement = document.getElementById('root');
+      const root = ReactDOM.createRoot(rootElement);
+
+      const childLog = createLog('color:blue', 2);
+      const appLog = createLog('color:green', 0);
+
+      function createLog(colorString, tabs) {
+        return (message) => {
+          const tabString = new Array(tabs).fill('\t').join('');
+          console.log(`%c${tabString}${message}`, colorString);
+        };
+      }
+
+      const Child = () => {
+        const [count, setCount] = React.useState(0);
+
+        function handleOnClick() {
+          setCount((prev) => prev + 1);
+        }
+
+        React.useEffect(() => {
+          childLog('Child side effect on mount called');
+          return () => {
+            childLog('Child mount side effect cleanup called');
+          };
+        }, []);
+
+        React.useEffect(() => {
+          childLog('Child side effect after every render called');
+          return () => {
+            childLog('Child every render side effect cleanup called');
+          };
+        });
+
+        childLog('Child renders');
+        return (
+          <div className="child-container">
+            <button onClick={handleOnClick}>{count}</button>
+          </div>
+        );
+      };
+
+      const App = () => {
+        const [showChild, setShowChild] = React.useState(() => {
+          appLog('showChild: lazy initialer should be called only on mount');
+          return true;
+        });
+
+        React.useEffect(() => {
+          appLog('app side effect on mount called');
+        }, []);
+
+        function onChecked(e) {
+          setShowChild(e.target.checked);
+        }
+
+        appLog('rendering App');
+        return (
+          <div>
+            <input type="checkbox" checked={showChild} onChange={onChecked} />
+            <label htmlFor="child-show-checkbox">Show Child</label>
+
+            {showChild ? <Child /> : null}
+          </div>
+        );
+      };
+      root.render(<App />);
+    </script>
+  </body>
+</html>
