@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+      label {
+        display: block;
+      }
+
+      .input-control {
+        margin-top: 16px;
+      }
+
+      button[type='submit'] {
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const rootElement = document.getElementById('root');
+      const root = ReactDOM.createRoot(rootElement);
+
+      const wait = (millisecs) =>
+        new Promise((resolve) => setTimeout(resolve, millisecs));
+
+      async function fetchQuote() {
+        await wait(2000);
+        const quotes = [
+          'Programming is understanding - Christian Nyggard',
+          'Without proper design, the problem becomes compounded',
+          'Universe is infinite, and human stupidity is the only thing that can compete with it',
+          'Future is here, it comes soon enough',
+          'The wicked heart needs to be concealed by a nice looking face',
+        ];
+        const randomIndex = Math.floor(Math.random() * quotes.length + 1);
+        if (randomIndex >= quotes.length) {
+          throw new Error('Server cant return a quote at the moment!');
+        }
+        return quotes[randomIndex];
+      }
+
+      const QuoteStatus = {
+        Pending: 'Pending',
+        ResponseReceived: 'ResponseReceived',
+        ErrorEncountered: 'Error Encountered',
+      };
+      const Quote = ({ shouldLoadAgain }) => {
+        const [quote, setQuote] = React.useState('...');
+        const [error, setError] = React.useState(null);
+        const [status, setStatus] = React.useState(QuoteStatus.Pending);
+        // pending, response-received, error-received
+
+        React.useEffect(() => {
+          async function getQuoteAndSetState() {
+            try {
+              const quoteFromServer = await fetchQuote();
+              setError(null);
+              setStatus(QuoteStatus.ResponseReceived);
+              setQuote(quoteFromServer);
+            } catch (error) {
+              setStatus(QuoteStatus.ErrorEncountered);
+              setError(error);
+            }
+          }
+          setStatus(QuoteStatus.Pending);
+          getQuoteAndSetState();
+        }, [shouldLoadAgain]);
+        // let error = null;
+        // let quote = 'ho';
+        console.log('Quote rendered');
+        let ui = null;
+        switch (status) {
+          case QuoteStatus.Pending:
+            ui = <div>...</div>;
+            break;
+          case QuoteStatus.ResponseReceived:
+            ui = <div>{quote}</div>;
+            break;
+          case QuoteStatus.ErrorEncountered:
+            ui = <div> Error encountered, please try again</div>;
+            break;
+          default:
+            break;
+        }
+        return <div>{ui}</div>;
+      };
+
+      const App = () => {
+        const [shouldLoad, setShouldLoad] = React.useState(true);
+        function handleLoadAgain() {
+          setShouldLoad((prev) => !prev);
+        }
+        return (
+          <div>
+            <Quote shouldLoadAgain={shouldLoad} />
+            <button onClick={handleLoadAgain}>Fetch again</button>
+          </div>
+        );
+      };
+      root.render(<App />);
+    </script>
+  </body>
+</html>
